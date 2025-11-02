@@ -1,0 +1,153 @@
+<section class="usuarios-panel">
+  <header class="panel-header">
+    <h2>Gestión de Usuarios</h2>
+
+    <div class="busqueda">
+      <input 
+        type="text" 
+        [(ngModel)]="terminoBusqueda"
+        placeholder="🔍 Buscar por nombre o RUT..."
+        (keyup.enter)="cargarUsuarios()" />
+      <button (click)="cargarUsuarios()" class="btn-buscar">Buscar</button>
+    </div>
+  </header>
+
+  <form class="form-usuario" (ngSubmit)="registrarUsuario()">
+    <div class="input-group">
+      <input type="text" placeholder="Nombre" [(ngModel)]="nuevoUsuario.nombre" name="nombre" required />
+      <input type="email" placeholder="Correo" [(ngModel)]="nuevoUsuario.correo" name="correo" required />
+    </div>
+
+    <div class="input-group">
+      <input type="text" placeholder="RUT" [(ngModel)]="nuevoUsuario.rut" name="rut" autocomplete="off" />
+      <input type="password" placeholder="Contraseña" [(ngModel)]="nuevoUsuario.password" name="password" required autocomplete="new-password" />
+    </div>
+
+    <div class="input-group select-group">
+      <select [(ngModel)]="nuevoUsuario.rol" name="rol" required>
+        <option value="" disabled selected>Seleccionar Rol</option>
+        <option value="Usuario">Usuario</option>
+        <option value="Admin">Admin</option>
+      </select>
+
+      <select [(ngModel)]="nuevoUsuario.cargo" name="cargo" required>
+        <option value="" disabled selected>Seleccionar Cargo</option>
+        <option value="Estudiante">Estudiante</option>
+        <option value="Docente">Docente</option>
+        <option value="Bibliotecario">Bibliotecario</option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn-registrar">+ Registrar Usuario</button>
+  </form>
+
+  <div class="tabla-container">
+    <table class="tabla-usuarios">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Correo</th>
+          <th>RUT</th>
+          <th>Situación</th>
+          <th>Rol</th>
+          <th>Cargo</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let usuario of usuarios">
+          <td>{{ usuario.nombre }}</td>
+          <td>{{ usuario.correo }}</td>
+          <td>{{ usuario.rut }}</td>
+          <td>
+            <span class="estado"
+                  [ngClass]="{
+                    'estado-vigente': usuario.situacion === 'Vigente',
+                    'estado-atrasado': usuario.situacion === 'Atrasado',
+                    'estado-bloqueado': usuario.situacion === 'Bloqueado',
+                    'estado-prestamo': usuario.situacion === 'Prestamo Activo'
+                  }">
+              {{ usuario.situacion }}
+            </span>
+          </td>
+          <td>{{ usuario.rol }}</td>
+          <td>{{ usuario.cargo }}</td>
+          <td class="acciones">
+            <button (click)="editarUsuario(usuario)" class="btn-editar">✏️</button>
+            <button (click)="eliminarUsuario(usuario)" class="btn-eliminar">🗑️</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- MODAL DE EDICIÓN -->
+<div class="modal-overlay" *ngIf="usuarioSeleccionado">
+  <div class="modal">
+    <header class="modal-header">
+      <h3>Editar Usuario</h3>
+      <button (click)="cerrarModal()" class="btn-cerrar">&times;</button>
+    </header>
+
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Nombre</label>
+        <input type="text" [(ngModel)]="usuarioSeleccionado.nombre" name="nombre">
+      </div>
+
+      <div class="form-group">
+        <label>Correo</label>
+        <input type="email" [(ngModel)]="usuarioSeleccionado.correo" name="correo">
+      </div>
+
+      <div class="form-group">
+        <label>RUT</label>
+        <input type="text" [(ngModel)]="usuarioSeleccionado.rut" name="rut">
+      </div>
+
+      <div class="form-group">
+        <label>Nueva Contraseña</label>
+        <input 
+          type="password"
+          [(ngModel)]="nuevaPasswordModal"
+          name="passwordModal"
+          autocomplete="new-password"
+          placeholder="Dejar en blanco para no cambiar" />
+      </div>
+
+      <div class="form-group">
+        <label>Situación</label>
+        <select [(ngModel)]="usuarioSeleccionado.situacion" name="situacion">
+          <option value="Vigente">Vigente</option>
+          <option value="Atrasado">Atrasado</option>
+          <option value="Bloqueado">Bloqueado</option>
+          <option value="Prestamo Activo">Préstamo Activo</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Rol</label>
+        <select [(ngModel)]="usuarioSeleccionado.rol" name="rol">
+          <option value="Usuario">Usuario</option>
+          <option value="Admin">Admin</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Cargo</label>
+        <select [(ngModel)]="usuarioSeleccionado.cargo" name="cargo">
+          <option value="Estudiante">Estudiante</option>
+          <option value="Docente">Docente</option>
+          <option value="Bibliotecario">Bibliotecario</option>
+        </select>
+      </div>
+    </div>
+
+    <footer class="modal-footer">
+      <button (click)="cerrarModal()" class="btn-cancelar">Cancelar</button>
+      <button (click)="guardarCambios()" class="btn-guardar">Guardar</button>
+    </footer>
+  </div>
+</div>

@@ -1,0 +1,92 @@
+/* Fondo general */
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #004e92, #000428);
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Tarjeta central */
+.login-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  color: #fff;
+  text-align: center;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+/* Título */
+.login-title {
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+}
+
+/* Campos del formulario */
+.form-group {
+  text-align: left;
+  margin-bottom: 1.2rem;
+}
+
+label {
+  display: block;
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+  opacity: 0.85;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.7rem;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  font-size: 1rem;
+  background-color: rgba(255, 255, 255, 0.85);
+}
+
+/* Botón */
+.login-button {
+  width: 100%;
+  padding: 0.8rem;
+  background: #00c6ff;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s;
+}
+
+.login-button:hover {
+  background: #0072ff;
+  transform: scale(1.03);
+}
+
+/* Mensaje de error */
+.error-message {
+  margin-top: 1rem;
+  color: #ff6666;
+  font-size: 0.9rem;
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Modo responsive */
+@media (max-width: 480px) {
+  .login-card {
+    padding: 2rem;
+    margin: 1rem;
+  }
+}

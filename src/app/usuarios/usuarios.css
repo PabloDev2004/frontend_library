@@ -1,0 +1,85 @@
+.usuarios-panel {
+  padding: 1.5rem;
+  background: #f8f9fb;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.busqueda input {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.btn-buscar {
+  margin-left: 0.5rem;
+  background-color: #3f51b5;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+}
+
+.form-usuario {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.input-group {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn-registrar {
+  align-self: flex-end;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+}
+
+.tabla-usuarios {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tabla-usuarios th, .tabla-usuarios td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.estado-vigente { color: #2e7d32; font-weight: bold; }
+.estado-atrasado { color: #f9a825; font-weight: bold; }
+.estado-bloqueado { color: #c62828; font-weight: bold; }
+.estado-prestamo { color: #1976d2; font-weight: bold; }
+
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90%;
+}
