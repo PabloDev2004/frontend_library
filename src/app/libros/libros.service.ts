@@ -6,7 +6,7 @@ import { ILibro, ICrearLibro } from '../interfaces/libro.interface';
   providedIn: 'root'
 })
 export class LibroService {
-  private apiUrl = 'https://backend-library-avn4.onrender.com';
+  private apiUrl = 'https://backend-library-7vwa.onrender.com/api/libros';
 
   constructor(private http: HttpClient) { }
 

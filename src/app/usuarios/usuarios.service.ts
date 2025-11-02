@@ -7,9 +7,9 @@ import { IUsuario, ICrearUsuario } from '../interfaces/usuario.interface';
   providedIn: 'root'
 })
 export class UsuarioService {
-  private apiUrl = 'https://backend-library-avn4.onrender.com';
+  private apiUrl = 'https://backend-library-7vwa.onrender.com/api/usuarios';
   
-  private healthUrl = 'https://backend-library-avn4.onrender.com';
+  private healthUrl = 'https://backend-library-7vwa.onrender.com';
 
 
   constructor(private http: HttpClient) { }
