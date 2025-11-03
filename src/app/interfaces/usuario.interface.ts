@@ -14,6 +14,7 @@ export interface ICrearUsuario {
   nombre: string;
   correo: string;
   rut: string;
+  situacion: 'Vigente' | 'Atrasado' | 'Bloqueado' | 'Prestamo Activo';
   rol: 'Admin' | 'Usuario';
   password: string;
   cargo: CargoUsuario;

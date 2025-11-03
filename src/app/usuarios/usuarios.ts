@@ -7,7 +7,7 @@ import { IUsuario, ICrearUsuario} from '../interfaces/usuario.interface';
 @Component({
   selector: 'app-usuarios',
   standalone: true,
-  imports: [CommonModule, FormsModule],  
+  imports: [CommonModule, FormsModule],   
   templateUrl: './usuarios.html',
   styleUrls: ['./usuarios.css', '../panel-gestion.css']
 })
@@ -18,6 +18,7 @@ export class Usuarios implements OnInit {
     correo: '',
     rut: '',
     rol: 'Usuario',
+    situacion: 'Vigente',
     password: '',
     cargo: 'Estudiante'
   };
@@ -49,6 +50,7 @@ export class Usuarios implements OnInit {
           nombre: '',
           correo: '',
           rut: '',
+          situacion: 'Vigente',
           rol: 'Usuario',
           password: '',
           cargo: 'Estudiante'

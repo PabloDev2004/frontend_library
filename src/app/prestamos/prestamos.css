@@ -1,21 +1,38 @@
+/* === PANEL PRINCIPAL DE PRÉSTAMOS === */
 .prestamos-panel {
-  padding: 1.5rem;
-  background: #fafafa;
-  border-radius: 12px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(14px);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeIn 0.5s ease-in-out;
 }
 
+.prestamos-panel:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* === CABECERA DEL PANEL === */
 .panel-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  color: #e3f2fd;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 0.5rem;
 }
 
+/* === FORMULARIO DE REGISTRO === */
 .prestamo-form {
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 1rem;
   margin-bottom: 1.5rem;
 }
 
@@ -25,37 +42,60 @@
   flex-wrap: wrap;
 }
 
-select, input[type="date"] {
-  padding: 0.5rem;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+select,
+input[type="date"] {
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
   flex: 1;
-  background: white;
+  transition: all 0.3s ease;
 }
 
+select option {
+  color: #000; /* legible dentro del menú desplegable */
+}
+
+select:focus,
+input[type="date"]:focus {
+  border-color: #00c6ff;
+  box-shadow: 0 0 8px rgba(0, 198, 255, 0.6);
+  outline: none;
+}
+
+/* === BOTÓN REGISTRAR === */
 .btn-registrar {
   align-self: flex-end;
-  padding: 0.6rem 1.2rem;
-  background: #3f51b5;
-  color: white;
+  padding: 0.8rem 1.8rem;
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  color: #fff;
   border: none;
-  border-radius: 6px;
-  transition: background 0.3s;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.25s ease, background 0.3s ease;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 .btn-registrar:hover {
-  background: #2e3e9e;
+  background: linear-gradient(135deg, #0072ff, #004e92);
+  transform: scale(1.05);
 }
 
+/* === MENSAJE DE ERROR === */
 .mensaje-error {
-  background: #fdecea;
-  border: 1px solid #f5c6cb;
-  color: #b71c1c;
-  padding: 0.8rem;
-  border-radius: 6px;
+  background: rgba(255, 68, 68, 0.15);
+  border: 1px solid rgba(255, 68, 68, 0.5);
+  color: #ff8a80;
+  padding: 1rem;
+  border-radius: 10px;
   margin-bottom: 1rem;
+  text-align: center;
+  font-weight: 500;
 }
 
+/* === TABLA DE PRÉSTAMOS === */
 .tabla-container {
   overflow-x: auto;
 }
@@ -63,53 +103,94 @@ select, input[type="date"] {
 .tabla-prestamos {
   width: 100%;
   border-collapse: collapse;
-  background: white;
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+  color: #e0e0e0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
-.tabla-prestamos th, .tabla-prestamos td {
-  padding: 0.8rem;
-  border-bottom: 1px solid #eee;
+.tabla-prestamos th,
+.tabla-prestamos td {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   text-align: left;
 }
 
+.tabla-prestamos th {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.9rem;
+}
+
+/* === ESTADOS DE PRÉSTAMO === */
 .estado-prestamo {
-  padding: 0.3rem 0.6rem;
-  border-radius: 6px;
-  font-weight: bold;
+  padding: 0.4rem 0.8rem;
+  border-radius: 12px;
+  font-weight: 600;
+  display: inline-block;
+  text-align: center;
 }
 
 .estado-prestamo.vigente {
-  color: #2e7d32;
-  background: #e8f5e9;
+  background: linear-gradient(135deg, #00c851, #007e33);
+  color: #fff;
 }
 
 .estado-prestamo.atrasado {
-  color: #f57c00;
-  background: #fff3e0;
+  background: linear-gradient(135deg, #fbc02d, #f57f17);
+  color: #fff;
 }
 
 .estado-prestamo.devuelto {
-  color: #1976d2;
-  background: #e3f2fd;
+  background: linear-gradient(135deg, #1976d2, #004ba0);
+  color: #fff;
 }
 
+/* === BOTONES DE ACCIÓN === */
 .btn-accion {
   border: none;
   background: transparent;
   cursor: pointer;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
+  transition: transform 0.25s ease;
 }
 
 .btn-accion:hover {
-  transform: scale(1.1);
+  transform: scale(1.2);
 }
 
 .btn-eliminar {
-  color: #c62828;
+  color: #ff5252;
 }
 
 .btn-devuelto {
-  color: #2e7d32;
+  color: #00c851;
+}
+
+/* === ANIMACIÓN DE ENTRADA === */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .prestamos-panel {
+    padding: 1.2rem;
+  }
+  .input-group {
+    flex-direction: column;
+  }
+  .btn-registrar {
+    width: 100%;
+  }
 }

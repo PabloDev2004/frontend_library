@@ -1,100 +1,127 @@
+/* === HEADER ESTILO GLASSMORPHISM === */
 .header {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  padding: 15px 30px;
-  background-color: rgba(0, 0, 0, 0.15);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+display: grid;
+grid-template-columns: 1fr auto 1fr;
+align-items: center;
+padding: 15px 30px;
+background: rgba(255, 255, 255, 0.15);
+backdrop-filter: blur(12px);
+border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+color: #fff;
+font-family: 'Poppins', sans-serif;
 }
 
+/* === TÍTULO === */
 .header h1 {
-  grid-column: 1;
-  justify-self: start;
+grid-column: 1;
+justify-self: start;
+font-size: 1.5rem;
+font-weight: 600;
+letter-spacing: 1px;
+text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
+/* === NAVEGACIÓN === */
 .header nav {
-  grid-column: 2;
-}
-
-.user-info-widget {
-  grid-column: 3;
-  justify-self: end;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  color: #FFFFFF;
-}
-
-.user-info-widget .user-name {
-  font-weight: 600;
-  font-size: 1.1em;
-}
-
-.user-info-widget .user-role {
-  font-size: 0.9em;
-  font-style: italic;
-  opacity: 0.8;
-}
-
-.user-info-widget .user-status {
-  font-size: 0.8em;
-  font-weight: 600;
-  padding: 2px 8px;
-  border-radius: 10px;
-  margin-top: 4px;
-  color: #FFFFFF;
-  text-align: center;
-}
-
-.user-status[data-situacion="Vigente"] {
-  background-color: #10B981;
-}
-.user-status[data-situacion="Prestamo Activo"] {
-  background-color: #3B82F6;
-}
-.user-status[data-situacion="Atrasado"] {
-  background-color: #F59E0B;
-}
-.user-status[data-situacion="Bloqueado"] {
-  background-color: #EF4444;
+grid-column: 2;
+display: flex;
+gap: 15px;
 }
 
 nav a {
-  color: #FFFFFF;
-  text-decoration: none;
-  padding: 10px 15px;
-  border-radius: 8px;
-  font-weight: 400;
-  transition: background-color 0.3s, color 0.3s;
-  cursor: pointer;
+color: #fff;
+text-decoration: none;
+padding: 10px 18px;
+border-radius: 8px;
+font-weight: 500;
+transition: background 0.3s ease, transform 0.2s ease;
+background: rgba(255, 255, 255, 0.1);
 }
 
 nav a:hover, nav a.activo {
-  background-color: #FFFFFF;
-  color: #F97316; 
+background: linear-gradient(135deg, #00c6ff, #0072ff);
+color: #fff;
+transform: scale(1.05);
 }
 
+/* === INFORMACIÓN DE USUARIO === */
+.user-info-widget {
+grid-column: 3;
+justify-self: end;
+display: flex;
+flex-direction: column;
+align-items: flex-end;
+text-align: right;
+color: #fff;
+}
+
+.user-info-widget .user-name {
+font-weight: 600;
+font-size: 1.1em;
+}
+
+.user-info-widget .user-role {
+font-size: 0.9em;
+font-style: italic;
+opacity: 0.85;
+}
+
+.user-info-widget .user-status {
+font-size: 0.8em;
+font-weight: 600;
+padding: 3px 10px;
+border-radius: 12px;
+margin-top: 6px;
+text-align: center;
+color: #fff;
+letter-spacing: 0.5px;
+box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+}
+
+/* COLORES DE ESTADO */
+.user-status[data-situacion="Vigente"] {
+background: linear-gradient(135deg, #00c851, #007e33);
+}
+.user-status[data-situacion="Prestamo Activo"] {
+background: linear-gradient(135deg, #33b5e5, #0099cc);
+}
+.user-status[data-situacion="Atrasado"] {
+background: linear-gradient(135deg, #fbc02d, #f57f17);
+}
+.user-status[data-situacion="Bloqueado"] {
+background: linear-gradient(135deg, #ff4444, #cc0000);
+}
+
+/* === ESTADO DE CONEXIÓN === */
 .connection-status {
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-  z-index: 1001; 
+position: fixed;
+bottom: 12px;
+right: 12px;
+z-index: 1001;
+font-family: 'Poppins', sans-serif;
 }
 
 .connection-status span {
-  padding: 8px 12px;
-  border-radius: 20px;
-  font-weight: 600;
+padding: 8px 14px;
+border-radius: 20px;
+font-weight: 600;
+color: #fff;
+box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 .connection-status .connected {
-  background-color: #10B981;
+background: linear-gradient(135deg, #00c851, #007e33);
 }
 
 .connection-status .disconnected {
-  background-color: #EF4444;
+background: linear-gradient(135deg, #ff4444, #cc0000);
 }
 
+/* === CONTENIDO PRINCIPAL === */
 main {
-  padding: 30px;
+padding: 30px;
+color: #fff;
+background: linear-gradient(135deg, #004e92, #000428);
+min-height: 100vh;
 }
