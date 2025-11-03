@@ -4,7 +4,12 @@ import { AuthService } from '../services/auth.services';
 import { map, take } from 'rxjs/operators';
 
 export const loginGuard: CanActivateFn = (route, state) => {
-  const authService = inject(AuthService);
+  
+  console.warn('--- MODO DE BYPASS TEMPORAL ACTIVO ---');
+  console.warn('loginGuard está permitiendo todo el acceso. No olvides restaurarlo.');
+  return true; // <-- ¡AQUÍ ESTÁ EL BYPASS!
+
+  /*const authService = inject(AuthService);
   const router = inject(Router);
 
   return authService.isLoggedIn$.pipe(
@@ -21,5 +26,5 @@ export const loginGuard: CanActivateFn = (route, state) => {
       }
       return true; 
     })
-  );
+  );*/
 };
