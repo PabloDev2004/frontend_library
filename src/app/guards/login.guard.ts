@@ -1,17 +1,25 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.services';
+import { map, take } from 'rxjs/operators';
 
 export const loginGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  // CORRECCIÓN: Usar el método isAuthenticated del servicio
-  if (authService.isAuthenticated) {
-    return true; // Si está autenticado, permite el acceso
-  }
-
-  // Si no está autenticado, lo redirige a la página de login
-  router.navigate(['/login']);
-  return false;
+  return authService.isLoggedIn$.pipe(
+    take(1),
+    map(isLoggedIn => {
+      if (isLoggedIn) {
+        const role = authService.getRole();
+        if (role === 'Admin') {
+          router.navigate(['/libros']);
+        } else {
+          router.navigate(['/prestamos']);
+        }
+        return false;
+      }
+      return true; 
+    })
+  );
 };

@@ -1,100 +1,111 @@
-import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject, catchError, map, throwError } from 'rxjs';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { tap } from 'rxjs/operators';
+import { jwtDecode } from 'jwt-decode';
 
-// Interfaces para tipado fuerte
-interface AuthResponse {
-  token: string;
-  user: {
-    id: string;
-    nombre: string;
-    correo: string;
-    rol: string;
-  };
+import { UsuarioService } from '../usuarios/usuarios.service';
+import { IUsuario } from '../interfaces/usuario.interface';
+
+interface JwtPayload {
+  id: string;
+  rol: 'Admin' | 'Usuario';
+  iat: number;
+  exp: number;
 }
-
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
+
 export class AuthService {
-  // --- CORRECCIÓN: URL de la API apuntando al backend ---
-  private apiUrl = 'http://localhost:3000/api/auth'; 
+  private apiUrl = '';
   
-  private tokenSubject = new BehaviorSubject<string | null>(null);
-  private userSubject = new BehaviorSubject<AuthResponse['user'] | null>(null);
+  private loggedIn = new BehaviorSubject<boolean>(this.hasToken());
+  private userRole = new BehaviorSubject<'Admin' | 'Usuario' | null>(null);
+  private userId = new BehaviorSubject<string | null>(null);
+  private currentUser = new BehaviorSubject<IUsuario | null>(null);
+  public currentUser$ = this.currentUser.asObservable();
 
-  isLoggedIn$ = this.tokenSubject.asObservable().pipe(map(token => !!token));
-  currentUser$ = this.userSubject.asObservable();
+  isLoggedIn$ = this.loggedIn.asObservable();
+  role$ = this.userRole.asObservable();
 
-  private http = inject(HttpClient);
-  private router = inject(Router);
-
-  constructor() {
-    // Cargar sesión desde localStorage al iniciar el servicio
-    this.loadSession();
+  constructor(
+    private router: Router,
+    private http: HttpClient,
+    private usuarioService: UsuarioService
+  ) {
+    this.checkTokenAndSetRole();
   }
 
-  // --- LÓGICA DE SESIÓN MEJORADA ---
-
-  private saveSession(response: AuthResponse) {
-    localStorage.setItem('token', response.token);
-    localStorage.setItem('user', JSON.stringify(response.user));
-    this.tokenSubject.next(response.token);
-    this.userSubject.next(response.user);
-  }
-
-  private loadSession() {
+  private checkTokenAndSetRole(): void {
     const token = localStorage.getItem('token');
-    const userJson = localStorage.getItem('user');
-    
-    if (token && userJson) {
+    if (token) {
       try {
-        const user = JSON.parse(userJson);
-        this.tokenSubject.next(token);
-        this.userSubject.next(user);
-      } catch (e) {
+        const decoded = jwtDecode<JwtPayload>(token);
+        if (decoded.exp * 1000 > Date.now()) {
+          this.loggedIn.next(true);
+          this.userRole.next(decoded.rol);
+          this.userId.next(decoded.id);
+
+          this.fetchAndSetCurrentUser(decoded.id);
+
+        } else {
+          this.logout();
+        }
+      } catch (error) {
         this.logout();
       }
     }
   }
 
+  private hasToken(): boolean {
+    return !!localStorage.getItem('token');
+  }
+
+  private fetchAndSetCurrentUser(id: string) {
+    this.usuarioService.getUsuarioById(id).subscribe({
+      next: (usuario) => {
+        this.currentUser.next(usuario);
+      },
+      error: (err) => {
+        console.error("No se pudo cargar la info del usuario, cerrando sesión.", err);
+        this.logout(); 
+      }
+    });
+  }
+
+  login(loginIdentifier: string, password: string) {
+    
+    return this.http.post<{ token: string }>(`${this.apiUrl}/login`, { loginIdentifier, password })
+      .pipe(
+        tap(response => {
+          localStorage.setItem('token', response.token);
+          const decoded = jwtDecode<JwtPayload>(response.token);
+          this.loggedIn.next(true);
+          this.userRole.next(decoded.rol);
+          this.userId.next(decoded.id);
+          this.router.navigate(['/libros']);
+
+          this.fetchAndSetCurrentUser(decoded.id);
+        })
+      );
+  }
+
   logout() {
     localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    this.tokenSubject.next(null);
-    this.userSubject.next(null);
+    this.loggedIn.next(false);
+    this.userRole.next(null);
+    this.userId.next(null);
+    this.currentUser.next(null);
     this.router.navigate(['/login']);
   }
-
-  // --- MÉTODOS DE API ---
-
-  login(credentials: { loginIdentifier: string, password: string }): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credentials).pipe(
-      map(response => {
-        this.saveSession(response);
-        return response;
-      }),
-      catchError(this.handleError)
-    );
-  }
-
-  guestLogin(): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/guest`, {}).pipe(
-      map(response => {
-        this.saveSession(response);
-        return response;
-      }),
-      catchError(this.handleError)
-    );
-  }
-
-  private handleError(error: any): Observable<never> {
-    const errorMessage = error.error?.message || 'Ocurrió un error inesperado. Inténtelo de nuevo.';
-    return throwError(() => new Error(errorMessage));
-  }
   
-  get isAuthenticated(): boolean {
-    return !!localStorage.getItem('token');
+  getRole(): 'Admin' | 'Usuario' | null {
+    return this.userRole.value;
+  }
+
+  getUserId(): string | null {
+    return this.userId.value;
   }
 }
