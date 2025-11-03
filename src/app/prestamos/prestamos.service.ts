@@ -7,7 +7,7 @@ import { IPrestamo, ICrearPrestamo } from '../interfaces/prestamo.interface';
   providedIn: 'root'
 })
 export class PrestamoService {
-  private apiUrl = 'https://backend-library-7vwa.onrender.com/api/prestamos';
+  private apiUrl = '';
 
   constructor(private http: HttpClient) { }
 
