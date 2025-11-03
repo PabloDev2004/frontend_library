@@ -1,43 +1,31 @@
 <div class="login-container">
-  <div class="login-card">
-    <h2 class="login-title">📚 Iniciar Sesión</h2>
-
-    <form (ngSubmit)="login()" autocomplete="off">
-      <!-- Usuario o correo -->
-      <div class="form-group">
-        <label for="usuario">Usuario o Correo</label>
-        <input 
-          type="text" 
-          id="usuario" 
-          name="usuario"
-          [(ngModel)]="usuario"
-          required
-          placeholder="Ej: usuario@correo.com"
-          class="form-control"
-        />
+  <div class="card">
+    <h2 class="title">Inicio de Sesión</h2>
+    
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="input-group">
+        <label for="loginIdentifier">Usuario o Correo</label>
+        <input id="loginIdentifier" type="text" formControlName="loginIdentifier" />
+      </div>
+      
+      <div class="input-group">
+        <label for="password">Contraseña</label>
+        <input id="password" type="password" formControlName="password" />
+      </div>
+      
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
       </div>
 
-      <!-- Contraseña -->
-      <div class="form-group">
-        <label for="clave">Contraseña</label>
-        <input 
-          type="password" 
-          id="clave" 
-          name="clave"
-          [(ngModel)]="clave"
-          required
-          placeholder="••••••••"
-          class="form-control"
-        />
-      </div>
-
-      <!-- Botón -->
-      <button type="submit" class="login-button">
-        Entrar
+      <button type="submit" class="login-button" [disabled]="loading">
+        {{ loading ? 'Cargando...' : 'Acceder' }}
       </button>
-
-      <!-- Error -->
-      <p *ngIf="mensaje" class="error-message">{{ mensaje }}</p>
     </form>
+
+    <div class="divider">o</div>
+    
+    <button (click)="onGuestLogin()" class="guest-button" [disabled]="loading">
+      Acceder como Invitado
+    </button>
   </div>
 </div>

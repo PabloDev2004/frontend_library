@@ -1,45 +1,71 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router'; // CORRECCIÓN: Inyección del Router
 import { AuthService } from '../services/auth.services';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login.html',
-  styleUrls: ['./login.css'] // ✅ corregido: debe ser styleUrls en plural
+  styleUrls: ['./login.css'],
 })
-export class Login {
+export class LoginComponent implements OnInit {
+  loginForm: FormGroup;
+  errorMessage: string | null = null;
+  loading: boolean = false;
 
-  usuario: string = '';
-  clave: string = '';
-  mensaje: string = '';
-  cargando: boolean = false; // 🔄 Nuevo: indica si está procesando el login
+  private fb = inject(FormBuilder);
+  private router = inject(Router); // CORRECCIÓN: Se inyecta el Router
+  private authService = inject(AuthService);
 
-  constructor(private authService: AuthService) {}
+  constructor() {
+    this.loginForm = this.fb.group({
+      loginIdentifier: ['', Validators.required],
+      password: ['', Validators.required],
+    });
+  }
 
-  login() {
-    // Evitar login vacío
-    if (!this.usuario.trim() || !this.clave.trim()) {
-      this.mensaje = 'Por favor, completa ambos campos.';
+  ngOnInit(): void {
+    // Si el usuario ya está logueado, lo redirige al panel
+    if (this.authService.isAuthenticated) {
+      this.router.navigate(['/panel']);
+    }
+  }
+
+  onSubmit(): void {
+    if (this.loginForm.invalid) {
+      this.errorMessage = 'Por favor, ingrese todos los campos.';
       return;
     }
 
-    this.cargando = true;
-    this.mensaje = 'Iniciando sesión...';
-
-    this.authService.login(this.usuario, this.clave).subscribe({
-      next: (respuesta) => {
-        this.cargando = false;
-        this.mensaje = `¡Bienvenido ${this.usuario}!`;
-        console.log('Sesión iniciada:', respuesta);
-        // 🔁 Aquí podrías redirigir al dashboard si lo deseas
+    this.loading = true;
+    this.errorMessage = null;
+    
+    this.authService.login(this.loginForm.value).subscribe({
+      next: () => {
+        this.router.navigate(['/panel']); // Redirección al panel
       },
-      error: (err) => {
-        this.cargando = false;
-        this.mensaje = err.error?.message || 'Credenciales incorrectas. Intenta nuevamente.';
-      }
+      error: (error) => {
+        this.loading = false;
+        this.errorMessage = error.message;
+      },
+    });
+  }
+
+  onGuestLogin(): void {
+    this.loading = true;
+    this.errorMessage = null;
+
+    this.authService.guestLogin().subscribe({
+      next: () => {
+        this.router.navigate(['/panel']);
+      },
+      error: (error) => {
+        this.loading = false;
+        this.errorMessage = error.message;
+      },
     });
   }
 }
