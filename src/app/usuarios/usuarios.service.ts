@@ -9,7 +9,7 @@ import { IUsuario, ICrearUsuario } from '../interfaces/usuario.interface';
 export class UsuarioService {
   private apiUrl = 'https://backend-library-h0ev.onrender.com/api/usuarios';
   
-  private healthUrl = '';
+  private healthUrl = 'https://backend-library-h0ev.onrender.com';
 
 
   constructor(private http: HttpClient) { }
