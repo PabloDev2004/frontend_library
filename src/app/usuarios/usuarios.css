@@ -122,7 +122,7 @@
 
 .tabla-usuarios th {
   background-color: #007bff;
-  color: black;
+  color: white;
   padding: 12px;
   font-weight: 600;
 }
@@ -133,7 +133,7 @@
 }
 
 .tabla-usuarios tr:hover {
-  background-color: #f1f7ff;
+  background-color: #0b65e4;
 }
 
 /* ==== ESTADOS ==== */

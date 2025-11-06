@@ -15,7 +15,7 @@
   <form class="form-usuario" (ngSubmit)="registrarUsuario()">
     <div class="input-group">
       <input type="text" placeholder="Nombre" [(ngModel)]="nuevoUsuario.nombre" name="nombre" required />
-      <input type="email" placeholder="Correo" [(ngModel)]="nuevoUsuario.email" name="correo" required />
+      <input type="email" placeholder="Correo" [(ngModel)]="nuevoUsuario.correo" name="correo" required />
     </div>
 
     <div class="input-group">
@@ -58,7 +58,7 @@
       <tbody>
         <tr *ngFor="let usuario of usuarios">
           <td>{{ usuario.nombre }}</td>
-          <td>{{ usuario.email }}</td>
+          <td>{{ usuario.correo }}</td>
           <td>{{ usuario.rut }}</td>
           <td>
             <span class="estado"
@@ -99,7 +99,7 @@
 
       <div class="form-group">
         <label>Correo</label>
-        <input type="email" [(ngModel)]="usuarioSeleccionado.email" name="correo">
+        <input type="email" [(ngModel)]="usuarioSeleccionado.correo" name="correo">
       </div>
 
       <div class="form-group">
