@@ -9,7 +9,7 @@
       <select [(ngModel)]="nuevoPrestamo.usuario" name="usuario" required>
         <option value="" disabled selected>Selecciona un usuario</option>
         <option *ngFor="let user of usuarios" [value]="user._id">
-          {{ user.nombre }} ({{ user.correo }})
+          {{ user.nombre }} ({{ user.email }})
         </option>
       </select>
 
